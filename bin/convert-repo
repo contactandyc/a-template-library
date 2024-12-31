@@ -44,17 +44,15 @@ for FILE in "${FILES_TO_PROCESS[@]}"; do
     sed -i '' -e "s/the-template-library/$NEW_PROJECT_NAME_HYPHENATED/g" "$FILE"
     sed -i '' -e "s/thetemplatelibrary/$NEW_PROJECT_NAME_CAMEL/g" "$FILE"
 
-    sed -i '' -e "s/template_/template_/g" "$FILE"
-
     # Replace version, year, and date placeholders
-    # sed -i '' -e "s/template_version/$VERSION/g" "$FILE"
-    # sed -i '' -e "s/template_year/$YEAR/g" "$FILE"
-    # sed -i '' -e "s/template_date/$DATE/g" "$FILE"
+    sed -i '' -e "s/template_version/$VERSION/g" "$FILE"
+    sed -i '' -e "s/template_year/$YEAR/g" "$FILE"
+    sed -i '' -e "s/template_date/$DATE/g" "$FILE"
 
     # Replace name and email placeholders
-    # sed -i '' -e "s/template_name/$NAME/g" "$FILE"
-    # sed -i '' -e "s/template_email/$EMAIL/g" "$FILE"
-    # sed -i '' -e "s@template_website@$WEBSITE@g" "$FILE"
+    sed -i '' -e "s/template_name/$NAME/g" "$FILE"
+    sed -i '' -e "s/template_email/$EMAIL/g" "$FILE"
+    sed -i '' -e "s@template_website@$WEBSITE@g" "$FILE"
   else
     echo "Warning: $FILE does not exist. Skipping."
   fi

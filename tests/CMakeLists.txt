@@ -6,7 +6,7 @@ enable_testing()
 set(LIB_TO_TEST atemplatelibrary)
 
 # Options
-option(USE_DEBUG_LIB "Link against debug library" OFF)
+option(USE_STATIC_LIB "Link against static library" OFF)
 option(USE_SHARED_LIB "Link against shared library" OFF)
 option(ENABLE_CODE_COVERAGE "Enable code coverage reporting" OFF)
 
@@ -35,7 +35,7 @@ if(ENABLE_CODE_COVERAGE)
             add_custom_target(coverage
                 COMMAND ${CMAKE_COMMAND} -E make_directory coverage-report
                 COMMAND find ${CMAKE_BINARY_DIR} -name "*.gcno" -execdir ${GCOV_EXECUTABLE} -o . {} \\\; > coverage-report/coverage.txt
-                COMMAND find ${CMAKE_BINARY_DIR} -name "*.gcno" -exec ls -l {} \\\;
+                COMMAND cat coverage-report/coverage.txt
                 WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
                 COMMENT "Generating code coverage report using gcov")
 
@@ -50,12 +50,12 @@ endif()
 include_directories(${CMAKE_SOURCE_DIR}/include)
 
 # Determine which library to link against
-if(USE_DEBUG_LIB)
-    set(LIB_TO_LINK ${LIB_TO_TEST}::debug)
+if(USE_STATIC_LIB)
+    set(LIB_TO_LINK ${LIB_TO_TEST}::${LIB_TO_TEST})
 elif(USE_SHARED_LIB)
     set(LIB_TO_LINK ${LIB_TO_TEST}::shared)
 else()
-    set(LIB_TO_LINK ${LIB_TO_TEST}::${LIB_TO_TEST})
+    set(LIB_TO_LINK ${LIB_TO_TEST}::debug)
 endif()
 
 # Add test executables
