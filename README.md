@@ -6,6 +6,13 @@
 ./bin/convert-repo "Your New Library" 3.2.1 2024-12-30 "Andy Curtis" "contactandyc@gmail.com" "linkedin.com/in/andycurtis"
 ```
 
+Make sure to remove the .git and recreate your own repo
+```bash
+rm -rf .git
+git init
+git add .
+```
+
 ## Building
 
 ### Build and Install
