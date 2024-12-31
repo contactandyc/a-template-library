@@ -3,14 +3,14 @@
 ## Setting up repo
 
 ```bash
+git clone https://github.com/contactandyc/a-template-library.git your-new-library
 ./bin/convert-repo "Your New Library" 3.2.1 2024-12-30 "Andy Curtis" "contactandyc@gmail.com" "linkedin.com/in/andycurtis"
 ```
 
-Make sure to remove the .git and recreate your own repo
+Set remote origin and push
 ```bash
-rm -rf .git
-git init
-git add .
+git remote add origin https://github.com/contactandyc/your-new-library.git
+git push -u origin main
 ```
 
 ## Building
