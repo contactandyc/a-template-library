@@ -1,0 +1,65 @@
+#!/bin/bash
+
+# Check if the correct number of arguments are provided
+if [ $# -ne 6 ]; then
+    echo "Usage: $0 <new_project_name> <version> <date> <name> <email> <website>"
+    exit 1
+fi
+
+# The new project name, version, date, name, and email passed as arguments
+NEW_PROJECT_NAME="$1"
+VERSION="$2"
+DATE="$3"
+NAME="$4"
+EMAIL="$5"
+WEBSITE="$6"
+
+# Extract the year from the date (first 4 characters)
+YEAR=$(echo "$DATE" | cut -c1-4)
+
+# Convert to the other variations of the name
+NEW_PROJECT_NAME_CAMEL=$(echo "$NEW_PROJECT_NAME" | tr '[:upper:]' '[:lower:]' | sed 's/ //g')
+NEW_PROJECT_NAME_HYPHENATED=$(echo "$NEW_PROJECT_NAME" | tr '[:upper:]' '[:lower:]' | sed 's/ /-/g' | tr '[:upper:]' '[:lower:]')
+
+# Predefined list of files to process
+FILES_TO_PROCESS=(
+  "./README.md"
+  "./NEWS.md"
+  "./NOTICE"
+  "./AUTHORS"
+  "./_config.yml"
+  "./.changes/template_version.md"
+  "./tests/CMakeLists.txt"
+  "./CMakeLists.txt"
+)
+
+# Loop through each file in the list
+for FILE in "${FILES_TO_PROCESS[@]}"; do
+  # Check if the file exists before attempting to process it
+  if [ -f "$FILE" ]; then
+    echo "Processing file: $FILE"
+
+    # Replace project name variations in the file
+    sed -i '' -e "s/The Template Library/$NEW_PROJECT_NAME/g" "$FILE"
+    sed -i '' -e "s/the-template-library/$NEW_PROJECT_NAME_HYPHENATED/g" "$FILE"
+    sed -i '' -e "s/thetemplatelibrary/$NEW_PROJECT_NAME_CAMEL/g" "$FILE"
+
+    sed -i '' -e "s/template_/template_/g" "$FILE"
+
+    # Replace version, year, and date placeholders
+    # sed -i '' -e "s/template_version/$VERSION/g" "$FILE"
+    # sed -i '' -e "s/template_year/$YEAR/g" "$FILE"
+    # sed -i '' -e "s/template_date/$DATE/g" "$FILE"
+
+    # Replace name and email placeholders
+    # sed -i '' -e "s/template_name/$NAME/g" "$FILE"
+    # sed -i '' -e "s/template_email/$EMAIL/g" "$FILE"
+    # sed -i '' -e "s@template_website@$WEBSITE@g" "$FILE"
+  else
+    echo "Warning: $FILE does not exist. Skipping."
+  fi
+done
+
+mv .changes/template_version.md .changes/$VERSION.md
+
+echo "Repository updated with new project name: $NEW_PROJECT_NAME, version: $VERSION, date: $DATE, name: $NAME, and email: $EMAIL"
