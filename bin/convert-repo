@@ -99,8 +99,11 @@ done
 cp "temp_repo/.changes/template_version.md" "./.changes/$VERSION.md"
 rm -f .changes/template_version.md
 
+# Clean up by removing the temporary repository clone
+rm -rf temp_repo
+
 # Check if the current repo is 'a-template-library' and remove the .git directory if so
-REPO_NAME=$(basename $(git rev-parse --show-toplevel))
+REPO_NAME=$(basename -s .git "$(git config --get remote.origin.url)")
 
 if [ "$REPO_NAME" == "a-template-library" ]; then
     echo "This repository is 'a-template-library'. Removing the .git directory..."
@@ -112,6 +115,3 @@ if [ "$REPO_NAME" == "a-template-library" ]; then
 fi
 
 echo "Repository updated with new project name: $NEW_PROJECT_NAME, version: $VERSION, date: $DATE, name: $NAME, and email: $EMAIL"
-
-# Clean up by removing the temporary repository clone
-rm -rf temp_repo
